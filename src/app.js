@@ -1,14 +1,14 @@
 import express from 'express'
-import authRouter from './routes/report.routes.js'
-import protectedRouter from './routes/protected.routes.js'
+import reportRouter from './routes/report.routes.js'
+import testerRouter from './routes/tester.routes.js'
 
 const app = express()
 
 app.use(express.json())
 
-app.use(authRouter)
+app.use(reportRouter)
 
-app.use(protectedRouter)
+app.use(testerRouter)
 
 app.use((error, req, res, next)=>{
     console.error('Unexpected server error', error.stack)
