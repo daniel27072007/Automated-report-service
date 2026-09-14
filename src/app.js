@@ -1,5 +1,5 @@
 import express from 'express'
-import authRouter from './routes/auth.routes.js'
+import authRouter from './routes/report.routes.js'
 import protectedRouter from './routes/protected.routes.js'
 
 const app = express()
