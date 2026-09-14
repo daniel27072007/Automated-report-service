@@ -1,0 +1,20 @@
+{
+  "name": "04---Automated-report-service",
+  "version": "1.0.0",
+  "description": "An automated background service that fetches weekly sales and customer data.",
+  "main": "server.js",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongodb": "^7.6.0",
+    "mongoose": "^9.10.0"
+  }
+}
