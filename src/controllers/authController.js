@@ -1,6 +1,4 @@
 import { userModel } from '../models/user.model.js'
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
 import express from 'express'
 import 'dotenv/config'
 import mongoose from 'mongoose'
@@ -22,12 +20,7 @@ export const registerUser = async (req, res) => {
         }
         const registeredUser = new userModel(userData)
         const savedUser = await registeredUser.save()
-        const tokenAccess = jwt.sign(
-            {userId: savedUser._id, userRole: savedUser.role},
-            process.env.TOKEN_ACCESS_KEY,
-            {expiresIn: process.env.TOKEN_ACCESS_EXPIRES}
-        )
-        return res.status(201).json({ message: 'User registered with success!', 'access-token': tokenAccess})
+        return res.status(201).json({ message: 'User registered with success!'})
     } catch (error) {
         if(error.code === 11000){
             if(error.message.includes('name')){
@@ -51,16 +44,7 @@ export const loginUser = async (req, res) => {
         if(!loggedUser){
             return res.status(400).json({ error: 'email or password are invalid.'})
         }
-        const isPasswordValid = await bcrypt.compare(loginData.password, loggedUser.password)
-        if(!isPasswordValid){
-            return res.status(401).json({ error: 'Invalid Email or Password.' });         
-        }
-        const tokenAccess = jwt.sign(
-            {userId: loggedUser._id, userRole: loggedUser.role},
-            process.env.TOKEN_ACCESS_KEY,
-            {expiresIn: process.env.TOKEN_ACCESS_EXPIRES}
-        )
-        return res.status(201).json({ message: 'User logged with success!', 'access-token': tokenAccess})
+        return res.status(201).json({ message: 'User logged with success!'})
     } catch (error) {
         if(error.name === "ValidationError"){
             return res.status(400).json({ error: 'Bad Request', message: error.message})
