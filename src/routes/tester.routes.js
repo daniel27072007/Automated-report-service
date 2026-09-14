@@ -5,6 +5,6 @@ const testerRouter = Router()
 
 testerRouter.post('/api/tester/send', salesInput)
 
-testerRouter.post('/api/tester/read', salesRead)
+testerRouter.get('/api/tester/read', salesRead)
 
 export default testerRouter
