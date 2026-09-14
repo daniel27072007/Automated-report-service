@@ -1,4 +1,4 @@
-import { userModel } from '../models/user.model.js'
+import { userModel } from '../models/sales.model.js'
 import express from 'express'
 import 'dotenv/config'
 import mongoose from 'mongoose'
