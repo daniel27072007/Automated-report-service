@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 import 'dotenv/config'
 
 export const reportsTrigger = async () => {
-
+    
 }
 
 export const reportsPreview = async () => {
