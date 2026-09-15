@@ -1,12 +1,12 @@
 import fs from 'fs'
 import PDFDocument from 'pdfkit'
 
-// const vendasDoBanco = [
-//     { clientName: 'Ana Silva', amount: 150.00, status: 'pago' },
-//     { clientName: 'Bruno Costa', amount: 89.90, status: 'pago' },
-//     { clientName: 'Carlos Souza', amount: 450.00, status: 'pendente' },
-//     { clientName: 'Daniela Lima', amount: 230.15, status: 'pago' }
-//   ];
+const vendasDoBanco = [
+    { clientName: 'Ana Silva', amount: 150.00, status: 'paid' },
+    { clientName: 'Bruno Costa', amount: 89.90, status: 'paid' },
+    { clientName: 'Carlos Souza', amount: 450.00, status: 'pendente' },
+    { clientName: 'Daniela Lima', amount: 230.15, status: 'paid' }
+  ];
 
 export function createPDF (dataTable) {
     const doc = new PDFDocument
@@ -29,8 +29,10 @@ export function createPDF (dataTable) {
         doc.text(element.clientName, 50, yActual);
         doc.text(`$ ${element.amount.toFixed(2)}`, 300, yActual);
         doc.text(element.status.toUpperCase(), 450, yActual);
+        if(element.status.toUpperCase() === 'PAID'){
+            totalAmount += element.amount
+        }
         yActual += 25;
-        totalAmount += element.amount
     });
 
     doc.moveTo(50, yActual).lineTo(550, yActual).strokeColor('#aaaaaa').stroke();
@@ -41,4 +43,4 @@ export function createPDF (dataTable) {
     doc.end()
 }
 
-//createPDF(vendasDoBanco)
+createPDF(vendasDoBanco)
