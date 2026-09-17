@@ -1,43 +1,7 @@
-import { salesModel } from './models/sales.model.js'
-import { reportLogModel } from './models/reportLog.model.js'
-import { CreatePDF_Buffer } from '../functions/PDF_Generator.js'
-import 'dotenv/config'
-import sgMail from '@sendgrid/mail'
+import { sendReportEmail } from '../functions/Send-Grid-Service.js'
 import cron from 'node-cron'
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
-
-const runWeeklyReport = async () => {
-    try {
-        const oneWeek = new Date()
-        oneWeek.setDate(oneWeek.getDate()-7)
-        const salesData = await salesModel.find({ createdAt: {$gte: oneWeek} })
-        const pdfBuffer = await CreatePDF_Buffer(salesData)
-        const pdfBase64 = pdfBuffer.toString('base64')
-        const msg = {
-            to: 'daniel.belculfine@gmail.com',
-            from: 'daniel.belculfine@gmail.com',
-            subject: 'Weekly Automated Sales Report',
-            text: 'Hello! Please find attached your weekly sales report.',
-            html: '<strong>Hello!</strong><br>Please find attached your weekly sales report.',
-            attachments: [
-                {
-                    content: pdfBase64,
-                    filename: 'weekly-report.pdf',
-                    type: 'aplication/pdf',
-                    disposition: 'attachment',
-                }
-            ]
-        }
-        await sgMail.send(msg)
-        await reportLogModel.create({ status: 'SUCCESS' })
-    } catch (error) {
-        console.error('Erro no SendGrid:', error);
-        await reportLogModel.create({ status: 'FAILED', errorMessage: error.message })
-    }
-}
-
-cron.schedule('0 0 * * 0', () => {
-    runWeeklyReport()
+cron.schedule('0 0 * * 0', async () => {
+    await sendReportEmail()
     console.log('report automatic sended')
 })
