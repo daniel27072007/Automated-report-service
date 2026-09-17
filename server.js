@@ -1,6 +1,7 @@
 import app from './src/app.js'
 import connectDatabase from './src/config/database.js'
 import 'dotenv/config'
+import './src/cron.js'
 
 const PORT = process.env.PORT || 3000
 
