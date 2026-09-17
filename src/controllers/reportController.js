@@ -1,4 +1,5 @@
 import { salesModel } from '../models/sales.model.js'
+import { reportLogModel } from '../models/reportLog.model.js'
 import { CreatePDF_Buffer } from '../../functions/PDF_Generator.js'
 import express from 'express'
 import mongoose from 'mongoose'
@@ -30,11 +31,13 @@ export const reportsTrigger = async (req, res) => {
             ]
         }
         await sgMail.send(msg)
+        await reportLogModel.create({ status: 'SUCCESS' })
         res.status(200).json({ 
             message: 'Report generated and email delivered to SendGrid successfully!' 
         });
     } catch (error) {
         console.error('Erro no SendGrid:', error);
+        await reportLogModel.create({ status: 'FAILED', errorMessage: error.message })
         res.status(500).json({ 
             error: error.message, 
             message: 'Something went wrong when triggering the report email' 
@@ -58,5 +61,10 @@ export const reportsPreview = async (req, res) => {
 }
 
 export const reportsStatus = async (req, res) => {
-    
+    try {
+        const reportLogJson = await reportLogModel.find().sort({ executedAt: -1 })
+        res.status(200).json(reportLogJson)
+    } catch (error) {
+        res.status(500).json({ error: error.message, message: 'Error generating the report log' });
+    }
 }

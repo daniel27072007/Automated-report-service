@@ -1,4 +1,5 @@
 import { salesModel } from './models/sales.model.js'
+import { reportLogModel } from './models/reportLog.model.js'
 import { CreatePDF_Buffer } from '../functions/PDF_Generator.js'
 import 'dotenv/config'
 import sgMail from '@sendgrid/mail'
@@ -29,8 +30,10 @@ const runWeeklyReport = async () => {
             ]
         }
         await sgMail.send(msg)
+        await reportLogModel.create({ status: 'SUCCESS' })
     } catch (error) {
         console.error('Erro no SendGrid:', error);
+        await reportLogModel.create({ status: 'FAILED', errorMessage: error.message })
     }
 }
 
