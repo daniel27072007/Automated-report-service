@@ -4,7 +4,7 @@
   "description": "An automated background service that fetches weekly sales and customer data.",
   "main": "server.js",
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand --detectOpenHandles",
     "start": "node server.js"
   },
   "keywords": [],
@@ -21,6 +21,7 @@
     "pdfkit": "^0.20.2"
   },
   "devDependencies": {
+    "cross-env": "^10.1.0",
     "jest": "^30.5.2",
     "supertest": "^7.2.2"
   }
