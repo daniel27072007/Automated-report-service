@@ -19,5 +19,9 @@
     "mongoose": "^9.10.0",
     "node-cron": "^4.6.0",
     "pdfkit": "^0.20.2"
+  },
+  "devDependencies": {
+    "jest": "^30.5.2",
+    "supertest": "^7.2.2"
   }
 }
